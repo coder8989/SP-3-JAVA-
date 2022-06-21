@@ -1,0 +1,434 @@
+Animal.java 
+package hahaha1;
+import java.util.ArrayList;
+ 
+public class Animal {
+   private String foodType;
+   private String species;
+   private String name;
+   private int age;
+   private double special;
+ 
+   public String getFoodType() {
+       return foodType;
+   }
+ 
+   public void setFoodType(String foodType) {
+       this.foodType = foodType;
+   }
+ 
+   public String getSpecies() {
+       return species;
+   }
+ 
+   public void setSpecies(String species) {
+       this.species = species;
+   }
+ 
+   public String getName() {
+       return name;
+   }
+ 
+   public void setName(String name) {
+       this.name = name;
+   }
+ 
+   public int getAge() {
+       return age;
+   }
+ 
+   public void setAge(int age) {
+       this.age = age;
+   }
+ 
+   public double getSpecial() {
+       return special;
+   }
+ 
+   public void setSpecial(double special) {
+       this.special = special;
+   }
+ 
+   public double getAvgAge(ArrayList<Animal> list, String specie){
+       double avgAge = 0.0;
+       double sumOfAges = 0;
+       int count = 0;
+       for (Animal animal: list) {
+           if(animal.getSpecies().contentEquals(specie)){
+               sumOfAges+=animal.getAge();
+               count++;
+           }
+       }
+       avgAge = sumOfAges/(count);
+       return avgAge;
+   }
+ 
+
+Classify.java
+package hahaha1;
+ 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Scanner;
+ 
+public class Classify {
+ 
+   public static void printSummary(ArrayList<Animal> list) {
+       Lion lion = new Lion(list);
+       Wolf wolf = new Wolf(list);
+       Elephant elephant = new Elephant(list);
+       Tiger tiger = new Tiger(list);
+       Leopard leopard = new Leopard(list);
+       Giraffe giraffe = new Giraffe(list);
+       Zebra zebra = new Zebra(list);
+       boolean printedLions = false;
+       boolean printedWolfs = false;
+       boolean printedTigers = false;
+       boolean printedLeopards = false;
+       boolean printedGiraffes = false;
+       boolean printedZebras = false;
+       boolean printedElephants = false;
+       System.out.println("Carnivores");
+       System.out.println("Type\t\tQty\t\tAvg. Age");
+       for (Animal animal : list) {
+           if (animal.getFoodType().contentEquals("Carnivore")) {
+               switch (animal.getSpecies()) {
+                   case "Lion":
+                       if(!printedLions){
+                           System.out.println(lion.toString());
+                           printedLions = true;
+                       }
+                       break;
+                   case "Tiger":
+                       if (!printedTigers){
+                           System.out.println(tiger.toString());
+                           printedTigers = true;
+                       }
+                       break;
+                   case "Wolf":
+                       if (!printedWolfs){
+                           System.out.println(wolf.toString());
+                           printedWolfs = true;
+                       }
+                       break;
+                   case "Leopard":
+                       if(!printedLeopards){
+                           System.out.println(leopard.toString());
+                           printedLeopards = true;
+                       }
+                       break;
+               }
+           }
+       }
+ 
+       System.out.println("\nHerbivores");
+       System.out.println("Type\t\tQty\t\tAvg.Age");
+       for (Animal animal : list) {
+           if (animal.getFoodType().contentEquals("Herbivore")) {
+               switch (animal.getSpecies()) {
+                   case "Elephant":
+                       if(!printedElephants){
+                           System.out.println(elephant.toString());
+                           printedElephants = true;
+                       }
+                       break;
+                   case "Zebra":
+                       if(!printedZebras){
+                           System.out.println(zebra.toString());
+                           printedZebras = true;
+                       }
+                       break;
+                   case "Giraffe":
+                       if (!printedGiraffes){
+                           System.out.println(giraffe.toString());
+                           printedGiraffes = true;
+                       }
+                       break;
+               }
+           }
+       }
+ 
+       System.out.println("\nOldest");
+       Animal oldestHerbivore = getOldestHerbivore(list);
+       Animal oldestCarnivore = getOldestCarnivore(list);
+       if(oldestHerbivore.getAge() > oldestCarnivore.getAge()){
+           System.out.println("Herbivore: "+oldestHerbivore.getSpecies()+"\t"+oldestHerbivore.getName()+"\t"+oldestHerbivore.getAge());
+           System.out.println("Carnivore: "+oldestCarnivore.getSpecies()+"\t"+oldestCarnivore.getName()+"\t"+oldestCarnivore.getAge());
+       }
+       else {
+           System.out.println("Carnivore: "+oldestCarnivore.getSpecies()+"\t"+oldestCarnivore.getName()+"\t"+oldestCarnivore.getAge());
+           System.out.println("Herbivore: "+oldestHerbivore.getSpecies()+"\t"+oldestHerbivore.getName()+"\t"+oldestHerbivore.getAge());
+       }
+   }
+ 
+   public static Animal getOldestCarnivore(ArrayList<Animal> list){
+       int maxAgeInCarnivores = list.get(0).getAge();
+       Animal carnivoreWithMaxAge = list.get(0);
+       for (Animal animal: list) {
+           if(animal.getSpecies().contentEquals("Carnivore")){
+               if(animal.getAge() > maxAgeInCarnivores){
+                   maxAgeInCarnivores = animal.getAge();
+                   carnivoreWithMaxAge = animal;
+               }
+           }
+       }
+       return carnivoreWithMaxAge;
+   }
+   public static Animal getOldestHerbivore(ArrayList<Animal> list){
+       int maxAgeInHerbivores = list.get(1).getAge();
+       Animal herbivoreWithMaxAge = list.get(1);
+       for (Animal animal:list) {
+           if(animal.getSpecies().contentEquals("Herbivore")) {
+               if(animal.getAge() > maxAgeInHerbivores){
+                   maxAgeInHerbivores = animal.getAge();
+                   herbivoreWithMaxAge = animal;
+               }
+           }
+       }
+       return herbivoreWithMaxAge;
+   }
+ 
+ 
+   public static void main(String[] args) {
+       ArrayList<Animal> animals = new ArrayList<>();
+       String[][] information = new String[14][5];
+       int index = 0;
+       try {
+           File myObj = new File("Countries.txt");
+           Scanner myReader = new Scanner(myObj);
+           while (myReader.hasNextLine()) {
+               String data = myReader.nextLine();
+               information[index] = data.split(",");
+               index++;
+           }
+           myReader.close();
+       } catch (FileNotFoundException e) {
+           System.out.println("An error occurred.");
+           e.printStackTrace();
+       }
+ 
+       for (int i = 0; i < 14; i++) {
+           Animal animal = new Animal();
+           animal.setFoodType(information[i][0]);
+           animal.setSpecies(information[i][1]);
+           animal.setName(information[i][2]);
+           animal.setAge(Integer.parseInt(information[i][3]));
+           animal.setSpecial(Double.parseDouble(information[i][4]));
+           animals.add(i, animal);
+       }
+ 
+       System.out.println("\t\t\t\t\t\tAnna's Animal Sanctuary");
+       System.out.println("Summary");
+       printSummary(animals);
+   }
+}
+ 
+ 
+Lion.java 
+package hahaha1;
+ 
+import java.util.ArrayList;
+ 
+public class Lion extends Animal{
+   private int noOfLions;
+   private double avgAge;
+ 
+   public Lion(ArrayList<Animal> animals){
+       calcQty(animals);
+   }
+   public void calcQty(ArrayList<Animal> list){
+       double totalAge = 0.0;
+       for (Animal animal: list) {
+           if (animal.getSpecies().contentEquals("Lion")) {
+               noOfLions++;
+               totalAge+=animal.getAge();
+           }
+       }
+       this.avgAge = (totalAge/noOfLions);
+   }
+ 
+   @Override
+   public String toString() {
+       return "Lions \t\t" + this.noOfLions + "\t\t" + this.avgAge;
+   }
+}
+ 
+Leopard.java 
+package hahaha1;
+ 
+import java.util.ArrayList;
+ 
+public class Leopard extends Animal{
+   private int noOfLions;
+   private double avgAge;
+ 
+   public Leopard(ArrayList<Animal> animals){
+       calcQty(animals);
+   }
+   public void calcQty(ArrayList<Animal> list){
+       double totalAge = 0.0;
+       for (Animal animal: list) {
+           if (animal.getSpecies().contentEquals("Leopard")) {
+               noOfLions++;
+               totalAge+=animal.getAge();
+           }
+       }
+       this.avgAge = (totalAge/noOfLions);
+   }
+ 
+   @Override
+   public String toString() {
+       return "Leopards \t\t" + this.noOfLions + "\t\t" + this.avgAge;
+   }
+}
+ 
+Elephant.java 
+package hahaha1;
+ 
+import java.util.ArrayList;
+ 
+public class Elephant extends Animal{
+   private int noOfLions;
+   private double avgAge;
+ 
+   public Elephant(ArrayList<Animal> animals){
+       calcQty(animals);
+   }
+   public void calcQty(ArrayList<Animal> list){
+       double totalAge = 0.0;
+       for (Animal animal: list) {
+           if (animal.getSpecies().contentEquals("Elephant")) {
+               noOfLions++;
+               totalAge+=animal.getAge();
+           }
+       }
+       this.avgAge = (totalAge/noOfLions);
+   }
+ 
+   @Override
+   public String toString() {
+       return "Elephants \t" + this.noOfLions + "\t\t" + this.avgAge;
+   }
+}
+ 
+ 
+Tiger.java
+package hahaha1;
+ 
+import java.util.ArrayList;
+ 
+public class Tiger extends Animal{
+   private int noOfLions;
+   private double avgAge;
+ 
+   public Tiger(ArrayList<Animal> animals){
+       calcQty(animals);
+   }
+   public void calcQty(ArrayList<Animal> list){
+       double totalAge = 0.0;
+       for (Animal animal: list) {
+           if (animal.getSpecies().contentEquals("Tiger")) {
+               noOfLions++;
+               totalAge+=animal.getAge();
+           }
+       }
+       this.avgAge = (totalAge/noOfLions);
+   }
+ 
+   @Override
+   public String toString() {
+       return "Tigers \t\t" + this.noOfLions + "\t\t" + this.avgAge;
+   }
+}
+ 
+ 
+Giraffe.java 
+package hahaha1;
+ 
+import java.util.ArrayList;
+ 
+public class Giraffe extends Animal{
+   private int noOfLions;
+   private double avgAge;
+ 
+   public Giraffe(ArrayList<Animal> animals){
+       calcQty(animals);
+   }
+   public void calcQty(ArrayList<Animal> list){
+       double totalAge = 0.0;
+       for (Animal animal: list) {
+           if (animal.getSpecies().contentEquals("Giraffe")) {
+               noOfLions++;
+               totalAge+=animal.getAge();
+           }
+       }
+       this.avgAge = (totalAge/noOfLions);
+   }
+ 
+   @Override
+   public String toString() {
+       return "Giraffes \t" + this.noOfLions + "\t\t" + this.avgAge;
+   }
+}
+ 
+ 
+Zebra.java 
+package hahaha1;
+ 
+import java.util.ArrayList;
+ 
+public class Zebra extends Animal{
+   private int noOfLions;
+   private double avgAge;
+ 
+   public Zebra(ArrayList<Animal> animals){
+       calcQty(animals);
+   }
+   public void calcQty(ArrayList<Animal> list){
+       double totalAge = 0.0;
+       for (Animal animal: list) {
+           if (animal.getSpecies().contentEquals("Zebra")) {
+               noOfLions++;
+               totalAge+=animal.getAge();
+           }
+       }
+       this.avgAge = (totalAge/noOfLions);
+   }
+ 
+   @Override
+   public String toString() {
+       return "Zebras \t\t" + this.noOfLions + "\t\t" + this.avgAge;
+   }
+}
+ 
+ 
+Wolf.java 
+package hahaha1;
+ 
+import java.util.ArrayList;
+ 
+public class Wolf extends Animal{
+   private int noOfWolf;
+   private double avgAge;
+ 
+   public Wolf(ArrayList<Animal> animals){
+       calcQty(animals);
+   }
+   public void calcQty(ArrayList<Animal> list){
+       double totalAge = 0.0;
+       for (Animal animal: list) {
+           if (animal.getSpecies().contentEquals("Wolf")) {
+               noOfWolf++;
+               totalAge+=animal.getAge();
+           }
+       }
+       this.avgAge = (totalAge/noOfWolf);
+   }
+ 
+   @Override
+   public String toString() {
+     return "Wolf \t\t" + this.noOfWolf + "\t\t" + this.avgAge;
+   }
+}
